@@ -1,6 +1,6 @@
 {
   "name": "react-burger-menu-simple",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple off-canvas react burger menu component navigation wrapper with alignment config.",
   "main": "./dist/cjs/index.js",
   "repository": {

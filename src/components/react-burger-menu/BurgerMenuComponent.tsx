@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useState } from "react";
+import { CSSProperties, ReactNode, useState, useMemo, useEffect } from "react";
 
 interface BurgerNavigationInterface {
     menuPostionFromTop: string;
@@ -20,22 +20,35 @@ const BurgerMenuComponent = (props:BurgerNavigationInterface) => {
     const isActiveLeft = (props.menuSlideIn === "left") ? `${getMenuState ? '0px' : '-' + props.menuWidth}` : "unset";
     const isActiveRight = (props.menuSlideIn === "right") ? `${getMenuState ? '0px' : '-' + props.menuWidth}` : "unset";
 
-    const MenuStyling = {
-        left: isActiveLeft,
-        right: isActiveRight,
-        top: props.menuPostionFromTop, 
-        height: `calc(100vh - ${props.menuPostionFromTop})`,
-        width: props.menuWidth, padding: props.menuPadding,
-        transition: props.menuTransition,
-        backgroundColor: props.menuBackgroundColour,
-    }
+    const MenuStyling = useMemo(() => {
+        return {
+            left: isActiveLeft,
+            right: isActiveRight,
+            top: props.menuPostionFromTop, 
+            height: `calc(100vh - ${props.menuPostionFromTop})`,
+            width: props.menuWidth, padding: props.menuPadding,
+            transition: props.menuTransition,
+            backgroundColor: props.menuBackgroundColour,
+        }
+    }, [isActiveLeft, 
+        isActiveRight,
+        props.menuPostionFromTop, 
+        props.menuWidth,
+        props.menuPadding,
+        props.menuTransition,
+        props.menuBackgroundColour]
+    );
 
-    const MenuOverlayStyling = {
-        display: (getMenuState) ? 'block' : 'none',
-        top: props.menuPostionFromTop, 
-        height: `calc(100vh - ${props.menuPostionFromTop})`,
-        ...props.overlayStyling
-    }
+    const MenuOverlayStyling = useMemo(() => {
+        return {
+                display: (getMenuState) ? 'block' : 'none',
+                top: props.menuPostionFromTop, 
+                height: `calc(100vh - ${props.menuPostionFromTop})`,
+                ...props.overlayStyling
+        }
+    }, [getMenuState, props.menuPostionFromTop, props.overlayStyling]);
+
+    useEffect(() => {}, [MenuStyling, MenuOverlayStyling]);
 
     return (
         <>
